@@ -22,7 +22,9 @@ function _cc(){
 }
 
 function _cf(){
-    readlink -f $1 | cc
+    if $READLINK -f $1 ; then
+        $READLINK -f $1 | c ${@:2} > /dev/null
+    fi
 }
 
 function _cr(){
@@ -43,9 +45,11 @@ function main(){
     if which pbcopy > /dev/null ; then
         COPY="pbcopy"
         PASTE="pbpaste"
+        READLINK="greadlink"
     elif which xclip > /dev/null ; then
         COPY="xclip -selection c"
         PASTE="xclip -selection clipboard -o"
+        READLINK="readlink"
     fi
 
     COMMAND=$(basename $0)
