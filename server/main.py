@@ -2,7 +2,6 @@ import gzip
 
 from environs import Env
 from flask import Flask, request, Response
-
 from utils import requires_auth, get_storage_backend, get_key, sizeof_fmt
 
 env = Env()
@@ -37,7 +36,7 @@ def ls(*args):
     files = storage_backend.list(prefix="/".join(args))
     dirs = sorted(filter(lambda x: x["dir"], files), key=lambda x: x["path"])
     files = sorted(filter(lambda x: not x["dir"], files), key=lambda x: x["path"])
-    return " ".join([x["path"] + "/" for x in dirs] + [x["path"] for x in files])
+    return " ".join([x["path"] + "/" for x in dirs] + [x["path"] for x in files]) + "\n"
 
 
 commands = {

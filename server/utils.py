@@ -3,9 +3,8 @@ from functools import wraps
 
 from environs import Env
 from flask import request, Response
-from werkzeug.exceptions import BadRequest
-
 from storage import FileBackend
+from werkzeug.exceptions import BadRequest
 
 env = Env()
 
@@ -33,7 +32,7 @@ def get_storage_backend():
 
 
 def get_key():
-    key = request.args.get("c", None).replace(" ", "/").replace("*", "")
+    key = request.args.get("c", "").replace(" ", "/").replace("*", "")
     if key is None:
         raise BadRequest()
     return key
