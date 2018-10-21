@@ -1,0 +1,8 @@
+Package: c
+Version: 1.0-1
+Section: base
+Priority: optional
+Architecture: all
+Depends: bash (>= 4.1.0)
+Maintainer: Philipp Reitter (i@philipp.ninja)
+Description: The C Macro

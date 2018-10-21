@@ -2,12 +2,14 @@ version: '2.0'
 services:
     c:
         restart: always
-        build: .
+        image: rettier/c-server
         ports:
             - 8099:8099
         environment:
             HOST: 0.0.0.0
             PORT: 8099
+            STORAGE_BACKEND: file
+            STORAGE_PATH: /data
         volumes:
             - ./data:/data
 

@@ -1,6 +1,6 @@
+import logging
 from functools import wraps
 
-import logging
 from environs import Env
 from flask import request, Response
 from werkzeug.exceptions import BadRequest
@@ -10,6 +10,14 @@ from storage import FileBackend
 env = Env()
 
 logger = logging.getLogger(__name__)
+
+
+def sizeof_fmt(num, suffix='B'):
+    for unit in ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z']:
+        if abs(num) < 1024.0:
+            return "%3.1f%s%s" % (num, unit, suffix)
+        num /= 1024.0
+    return "%.1f%s%s" % (num, 'Yi', suffix)
 
 
 def get_storage_backend():
