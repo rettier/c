@@ -15,17 +15,21 @@ Lots of log output...
 
 ```bash
 # Dev A: what folder you want that file scp'd to?
-$ cf data/ hereplease
 
 # Dev B:
+$ cf data/ hereplease
+
+# Dev A: data comming your way bro
 $ scp -r data/ server:$(c hereplease) 
 ```
 
 ```bash
 # Dev A: can you send me that file
+
+# Dev B: it's in 'c file'
 $ cat file | c file
 
-# Dev B:
+# Dev A: thanks bro
 $ c file > file
 ```
 
