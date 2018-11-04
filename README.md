@@ -2,6 +2,34 @@
 
 The C Macro makes your local clipboard easily accessible in your Terminal. While xclip/pbcopy can do the same (and are used in the backend), the c macro is consistent across platforms with some neat extras.
 
+The C Macro is ideal for collaboration. We observed too often that many things get sent in messengers, spamming everyones notifcations and requiring an internet connection. Example usages include but are not limited to:
+
+```bash
+# Dev A: hey have a look at that weird log output
+$ ./thing_that_produces_weird_log_output | c log
+
+# Dev B:
+$ c log
+Lots of log output...
+```
+
+```bash
+# Dev A: what folder you want that file scp'd to?
+$ cf data/ hereplease
+
+# Dev B:
+$ scp -r data/ server:$(c hereplease) 
+```
+
+```bash
+# Dev A: can you send me that file
+$ cat file | c file
+
+# Dev B:
+$ c file > file
+```
+
+
 ## Local Usage
 
 Everything from stdin goes directly to the clipboard
