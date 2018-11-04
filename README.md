@@ -29,6 +29,7 @@ If setup, c can also send/retrieve the data from a remote server, instead of you
 Start a local server and set the appropriate environment variable
 ```bash
 $ docker run --rm -d --name c-server -p 8000:80 -e STORAGE_BACKEND=file -e STORAGE_PATH=/tmp rettier/c-server
+# to clean up after the tutorial run $ docker stop c-server
 
 # fish
 $ set -gx C_HOST http://127.0.0.1:8000/
