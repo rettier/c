@@ -11,4 +11,4 @@ RUN pip install --no-cache-dir flask environs gunicorn
 
 ADD server/ /app
 WORKDIR /app
-CMD ["gunicorn", "main:app"]
+CMD ["gunicorn", "main:app", "-w", "4", "--threads", "12", "--bind", "0.0.0.0:80"]

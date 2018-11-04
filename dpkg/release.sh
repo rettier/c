@@ -10,11 +10,22 @@ echo $(awk '{print $1+1}' < REVISION) > REVISION
 VERSION=$(cat VERSION)
 REVISION=$(cat REVISION)
 PKG_NAME="c"
-CHROOT="${PKG_NAME}_${VERSION}-${REVISION}"
 
+# build tar gz
+CHROOT="${PKG_NAME}_${VERSION}-${REVISION}"
+mkdir -p "$CHROOT"
+cp ../c "$CHROOT/c"
+ln -fs "./c" "$CHROOT/cf"
+tar czvf "${CHROOT}.tar.gz" "${CHROOT}"
+rm -rf "$CHROOT"
+
+# build dpkg
+CHROOT="${PKG_NAME}_${VERSION}-${REVISION}"
 mkdir -p "$CHROOT/usr/local/bin"
 mkdir -p "$CHROOT/DEBIAN"
 cp control "$CHROOT/DEBIAN/"
 cp ../c "$CHROOT/usr/local/bin/c"
+ln -fs "./c" "$CHROOT/usr/local/bin/cf"
 dpkg --build "$CHROOT"
 rm -rf "$CHROOT"
+
