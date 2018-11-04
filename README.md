@@ -66,7 +66,7 @@ $ c ll
    33.0B test
    
 $ c ll folder
-   28.0B folder/file
+   28.0B folder/hello
 ```
 
 ## Misc
