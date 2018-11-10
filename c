@@ -50,6 +50,10 @@ function main(){
         COPY="xclip -selection c"
         PASTE="xclip -selection clipboard -o"
         READLINK="readlink"
+    elif which xsel > /dev/null ; then
+        COPY="xsel --clipboard --input"
+        PASTE="xsel --clipboard --output"
+        READLINE="readlink"
     fi
 
     COMMAND=$(basename $0)
