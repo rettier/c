@@ -1,5 +1,80 @@
 #!/bin/bash
 
+# ------------------------------------------------------------------------------
+# inlined version of Michael Kropat's (mkropat) realpath.sh
+# https://github.com/mkropat/sh-realpath
+# this is to get rid of the core-utils dependency on osx
+realpath() {
+    canonicalize_path "$(resolve_symlinks "$1")"
+}
+
+resolve_symlinks() {
+    _resolve_symlinks "$1"
+}
+
+_resolve_symlinks() {
+    _assert_no_path_cycles "$@" || return
+
+    local dir_context path
+    path=$(readlink -- "$1")
+    if [ $? -eq 0 ]; then
+        dir_context=$(dirname -- "$1")
+        _resolve_symlinks "$(_prepend_dir_context_if_necessary "$dir_context" "$path")" "$@"
+    else
+        printf '%s\n' "$1"
+    fi
+}
+
+_prepend_dir_context_if_necessary() {
+    if [ "$1" = . ]; then
+        printf '%s\n' "$2"
+    else
+        _prepend_path_if_relative "$1" "$2"
+    fi
+}
+
+_prepend_path_if_relative() {
+    case "$2" in
+        /* ) printf '%s\n' "$2" ;;
+         * ) printf '%s\n' "$1/$2" ;;
+    esac
+}
+
+_assert_no_path_cycles() {
+    local target path
+
+    target=$1
+    shift
+
+    for path in "$@"; do
+        if [ "$path" = "$target" ]; then
+            return 1
+        fi
+    done
+}
+
+canonicalize_path() {
+    if [ -d "$1" ]; then
+        _canonicalize_dir_path "$1"
+    else
+        _canonicalize_file_path "$1"
+    fi
+}
+
+_canonicalize_dir_path() {
+    (cd "$1" 2>/dev/null && pwd -P)
+}
+
+_canonicalize_file_path() {
+    local dir file
+    dir=$(dirname -- "$1")
+    file=$(basename -- "$1")
+    (cd "$dir" 2>/dev/null && printf '%s/%s\n' "$(pwd -P)" "$file")
+}
+# ------------------------------------------------------------------------------
+
+# ------------------------------------------------------------------------------
+# c macro start
 function _c(){
   if [[ $# -gt 0 ]] ; then
       _cr $@ <&0
@@ -22,8 +97,8 @@ function _cc(){
 }
 
 function _cf(){
-    if $READLINK -f $1 ; then
-        $READLINK -f $1 | c ${@:2} > /dev/null
+    if realpath "$1" ; then
+      realpath "$1" | c ${@:2} > /dev/null
     fi
 }
 
@@ -41,19 +116,20 @@ function _cr(){
 	fi
 }
 
+function has_command() {
+    which "$1" >/dev/null 2>&1 
+}
+
 function main(){
-    if which pbcopy > /dev/null ; then
+    if has_command pbcopy ; then
         COPY="pbcopy"
         PASTE="pbpaste"
-        READLINK="greadlink"
-    elif which xclip > /dev/null ; then
+    elif has_command xclip ; then
         COPY="xclip -selection c"
         PASTE="xclip -selection clipboard -o"
-        READLINK="readlink"
-    elif which xsel > /dev/null ; then
+    elif has_command xsel ; then
         COPY="xsel --clipboard --input"
         PASTE="xsel --clipboard --output"
-        READLINE="readlink"
     fi
 
     COMMAND=$(basename $0)
@@ -63,5 +139,6 @@ function main(){
         $COMMAND $@ <&0
     fi
 }
+# ------------------------------------------------------------------------------
 
 main $@
