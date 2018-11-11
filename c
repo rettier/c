@@ -98,13 +98,13 @@ function _cc(){
 
 function _cf(){
     if realpath "$1" ; then
-      realpath "$1" | c ${@:2} > /dev/null
+      realpath "$1" | _c ${@:2} > /dev/null
     fi
 }
 
 function _cr(){
     if [[ -z $C_HOST ]] ; then
-        echo "missing configuration: set \$C_HOST to a c-server"
+        (>&2 echo "missing configuration: set \$C_HOST to a c-server")
         exit 1
     fi
 
