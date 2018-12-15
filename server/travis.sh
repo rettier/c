@@ -21,10 +21,5 @@ docker build  \
         --build-arg VERSION="${VERSION}" .
 
 docker push ${CONTAINER}:${VERSION}
-
-if [ ! -z $IS_RELEASE ] ; then
-  echo "Pushing additional tag: latest"
-
-  docker tag ${CONTAINER}:${VERSION} ${CONTAINER}:latest
-  docker push ${CONTAINER}:latest
-fi
+docker tag ${CONTAINER}:${VERSION} ${CONTAINER}:latest
+docker push ${CONTAINER}:latest

@@ -2,10 +2,6 @@ if: tag IS present
 
 language: generic
 
-env:
-    global:
-        - IS_RELEASE=$(git ls-remote origin | grep "$TRAVIS_COMMIT\s\+refs/heads/master")
-
 services:
   - docker
 
