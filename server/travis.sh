@@ -7,7 +7,7 @@ echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 CONTAINER="rettier/c-server"
 VERSION=${TRAVIS_TAG:1}
-CACHE_CONTAINER="rettier/c-server:$TRAVIS_BRANCH"
+CACHE_CONTAINER="rettier/c-server:latest"
 
 echo "Building   ${CONTAINER}:${VERSION}"
 echo "Cache from ${CACHE_CONTAINER}"
@@ -22,7 +22,7 @@ docker build  \
 
 docker push ${CONTAINER}:${VERSION}
 
-if [[ $TRAVIS_BRANCH == 'master' ]] ; then
+if [ -z $IS_RELEASE ] ; then
   echo "Pushing additional tag: latest"
 
   docker tag ${CONTAINER}:${VERSION} ${CONTAINER}:latest
