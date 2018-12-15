@@ -22,7 +22,7 @@ docker build  \
 
 docker push ${CONTAINER}:${VERSION}
 
-if [ -z $IS_RELEASE ] ; then
+if [ ! -z $IS_RELEASE ] ; then
   echo "Pushing additional tag: latest"
 
   docker tag ${CONTAINER}:${VERSION} ${CONTAINER}:latest

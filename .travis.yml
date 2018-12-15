@@ -4,7 +4,7 @@ language: generic
 
 env:
     global:
-        - IS_RELEASE=$(git ls-remote origin | grep "$TRAVIS_COMMIT\s\+refs/heads/release$")
+        - IS_RELEASE=$(git ls-remote origin | grep "$TRAVIS_COMMIT\s\+refs/heads/master")
 
 services:
   - docker
@@ -16,9 +16,9 @@ deploy:
       tags: true
 
   - provider: releases
-    script: travis.sh
+    script: ./travis.sh
     file_glob: true
-    file: c_*
+    file: dist/*
     api_key: $GITHUB_OAUTH_TOKEN
     skip_cleanup: true
     on:

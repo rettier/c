@@ -26,3 +26,5 @@ ln -fs "./c" "$CHROOT/usr/local/bin/cf"
 dpkg --build "$CHROOT"
 rm -rf "$CHROOT"
 
+mkdir -p dist
+mv c_*.deb c_*.tar.gz dist/
