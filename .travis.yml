@@ -17,8 +17,10 @@ jobs:
   include:
     - stage: DockerHub Release
       deploy:
-          provider: script
-          script: server/travis.sh
+        provider: script
+        script: server/travis.sh
+        on:
+          tags: true
 
     - stage: GitHub Release
       script: ./travis.sh
@@ -28,3 +30,5 @@ jobs:
         file: dist/*
         api_key: $GITHUB_OAUTH_TOKEN
         skip_cleanup: true
+        on:
+          tags: true
