@@ -1,3 +1,7 @@
+if: tag IS present
+
+language: generic
+
 services:
   - docker
 
