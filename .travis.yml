@@ -1,4 +1,4 @@
-if: tag IS present
+if: tag IS present AND branch = master
 
 language: generic
 
@@ -9,16 +9,18 @@ env:
 services:
   - docker
 
-deploy:
-  - provider: script
-    script: server/travis.sh
-    on:
-      tags: true
+stages:
+  - DockerHub Release
+  - GitHub Release
 
 jobs:
   include:
+    - stage: DockerHub Release
+      deploy:
+          provider: script
+          script: server/travis.sh
+
     - stage: GitHub Release
-      if: branch = master
       script: ./travis.sh
       deploy:
         provider: releases
