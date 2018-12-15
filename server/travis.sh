@@ -2,7 +2,7 @@
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
-CONTAINER="rettier/c"
+CONTAINER="rettier/c-server"
 VERSION=${TRAVIS_TAG:1}
 CACHE_CONTAINER="rettier/c:$TRAVIS_BRANCH"
 
