@@ -1,4 +1,4 @@
-if: (tag =~ ^v) AND (branch = master)
+if: tag IS present
 
 language: generic
 
