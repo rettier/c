@@ -1,0 +1,10 @@
+language: python
+
+services:
+  - docker
+
+deploy:
+  - provider: script
+    script: server/travis.sh
+    on:
+      tags: true

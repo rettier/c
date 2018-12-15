@@ -25,7 +25,7 @@ def get_storage_backend():
         return FileBackend(
             path=env("STORAGE_PATH"),
             cleanup_interval=env.int("CLEANUP_INTERVAL", 5 * 60),
-            retention=env("RETENTION", 3600 * 24)
+            retention=env("RETENTION", None)
         )
     else:
         logger.error("unknown storage backend {}".format(backend))
