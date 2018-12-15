@@ -15,12 +15,14 @@ deploy:
     on:
       tags: true
 
-  - provider: releases
-    script: ./travis.sh
-    file_glob: true
-    file: dist/*
-    api_key: $GITHUB_OAUTH_TOKEN
-    skip_cleanup: true
-    on:
-      tags: true
-      branch: master
+jobs:
+  include:
+    - stage: GitHub Release
+      if: branch = master
+      script: ./travis.sh
+      deploy:
+        provider: releases
+        file_glob: true
+        file: dist/*
+        api_key: $GITHUB_OAUTH_TOKEN
+        skip_cleanup: true
