@@ -36,13 +36,15 @@ class FileBackend(StorageBackend):
         self.path = path
         self.block_size = 1024 * 1024 * 4
         self.cleanup_interval = cleanup_interval
-        if self.retention < self.cleanup_interval:
-            logger.warning("Retention duration ({}) lower than cleanup interval ({}). Data may be retained up to "
-                           "the cleanup interval.".format(self.retention, self.cleanup_interval))
 
-        cleanup_thread = threading.Thread(target=self._cleanup_thread)
-        cleanup_thread.setDaemon(True)
-        cleanup_thread.start()
+        if self.retention:
+            if self.retention < self.cleanup_interval:
+                logger.warning("Retention duration ({}) lower than cleanup interval ({}). Data may be retained up to "
+                               "the cleanup interval.".format(self.retention, self.cleanup_interval))
+
+            cleanup_thread = threading.Thread(target=self._cleanup_thread)
+            cleanup_thread.setDaemon(True)
+            cleanup_thread.start()
 
     def _cleanup_thread(self):
         while True:
