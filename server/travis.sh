@@ -1,17 +1,17 @@
 #!/bin/bash
+set -e
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 
 CONTAINER="rettier/c-server"
 VERSION=${TRAVIS_TAG:1}
-CACHE_CONTAINER="rettier/c:$TRAVIS_BRANCH"
+CACHE_CONTAINER="rettier/c-server:$TRAVIS_BRANCH"
 
 echo "Building   ${CONTAINER}:${VERSION}"
 echo "Cache from ${CACHE_CONTAINER}"
 
 docker pull ${CACHE_CONTAINER} || true
 docker build  \
-        -f Dockerfile  \
         -t ${CONTAINER}:${VERSION} \
         --cache-from=$CACHE_CONTAINER \
         --build-arg GIT_BRANCH="${TRAVIS_BRANCH}" \
