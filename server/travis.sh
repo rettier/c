@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
-cd $(dirname $0)
+BASEDIR=$(dirname $0)
+pushd $BASEDIR
 
 echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
 

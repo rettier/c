@@ -10,3 +10,13 @@ deploy:
     script: server/travis.sh
     on:
       tags: true
+
+  - provider: releases
+    script: travis.sh
+    file_glob: true
+    file: c_*
+    api_key: $GITHUB_OAUTH_TOKEN
+    skip_cleanup: true
+    on:
+      tags: true
+      branch: master
