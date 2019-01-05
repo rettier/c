@@ -34,6 +34,19 @@ $ c file > file
 ```
 
 
+
+## Installation
+
+### OSX
+```bash
+$ brew install rettier/tap/c
+```
+
+### Linux
+Download the latest [release](https://github.com/rettier/c/releases/latest) from github. For debian based systems a deb file is available.
+
+
+
 ## Local Usage
 
 Everything from stdin goes directly to the clipboard
@@ -104,6 +117,19 @@ $ c ll folder
 
 
 
+## Server options
+
+### Storage backend
+Currently only the file storage backend (`STORAGE_BACKEND=file`) is supported. The storage filepath can be configured via `STORAGE_PATH`.
+
+### Authentication
+The server supports basic authentication. On the server side configure the environment variables `USERNAME` and `PASSWORD`. The client's `C_HOST` url needs to be configured to use the username/password: `http(s)://USERNAME:PASSWORD@example.com`.
+
+### Data retention
+The server can be configured to delete old files. 
+- `RETENTION`: retention duration in seconds
+- `CLEANUP_INTERVAL`: interval how often the file timestamps are checked
+
 ## Misc
 
 an additional macro is provided to copy the full path of the specified file/folder
@@ -127,15 +153,3 @@ to paste from your local clipboard to the remote
 ```bash
 $ c | c test
 ```
-
-
-
-## Installation
-
-### OSX
-```bash
-$ brew install rettier/tap/c
-```
-
-### Linux
-Download the latest [release](https://github.com/rettier/c/releases/latest) from github. For debian based systems a deb file is available.
