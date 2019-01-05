@@ -53,6 +53,7 @@ $ c | wc -w
 ```
 
 
+
 ## Remote Usage
 
 If setup, c can also send/retrieve the data from a remote server, instead of your local clipboard. 
@@ -101,6 +102,8 @@ $ c ll folder
    28.0B folder/hello
 ```
 
+
+
 ## Misc
 
 an additional macro is provided to copy the full path of the specified file/folder
@@ -124,3 +127,15 @@ to paste from your local clipboard to the remote
 ```bash
 $ c | c test
 ```
+
+
+
+## Installation
+
+### OSX
+```bash
+$ brew install rettier/tap/c
+```
+
+### Linux
+Download the latest [release](https://github.com/rettier/c/releases/latest) from github. For debian based systems a deb file is available.
