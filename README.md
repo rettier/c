@@ -5,7 +5,7 @@ The C Macro makes your local clipboard easily accessible in your Terminal. While
 The C Macro is ideal for collaboration. We observed too often that many things get sent in messengers, spamming everyones notifcations and requiring an internet connection. Example usages include but are not limited to:
 
 ```bash
-$ echo "Hello C" | c
+$ echo "Hello C" | c # the text is now your clipboard
 $ c 
 Hello C
 ```
