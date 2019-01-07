@@ -75,70 +75,71 @@ _canonicalize_file_path() {
 
 # ------------------------------------------------------------------------------
 # c macro start
-function _c(){
+_c(){
   if [[ $# -gt 0 ]] ; then
-      _cr $@ <&0
+      _cr "$@" <&0
       return
   fi
   if tty > /dev/null; then
-    $PASTE
+    ${paste}
   else
-    $COPY <&0
+    ${copy} <&0
   fi
 }
 
-function _cc(){
+_cc(){
   if tty > /dev/null ; then
-    $PASTE
+    ${paste}
   else
-    $COPY <&0
-    $PASTE
+    ${copy} <&0
+    ${paste}
   fi
 }
 
-function _cf(){
+_cf(){
     if realpath "$1" ; then
-      realpath "$1" | _c ${@:2} > /dev/null
+      realpath "$1" | _c "${@:2}" > /dev/null
     fi
 }
 
-function _cr(){
+_cr(){
     if [[ -z $C_HOST ]] ; then
         (>&2 echo "missing configuration: set \$C_HOST to a c-server")
         exit 1
     fi
 
-    KEY=$(echo $* | sed "s/ /%20/g")
+  key="${*}"
+  key=${key// /%20}
 	if tty > /dev/null ; then
-	    curl -G "$C_HOST/?c=$KEY" -XGET -sS | gunzip
+	    curl -G "$C_HOST/?c=${key}" -XGET -sS | gunzip
 	else
-	    gzip <&0 | curl -H 'Content-Type: application/octet-stream' -XPOST "$C_HOST/?c=$KEY" --data-binary @- -sS
+	    gzip <&0 | curl -H 'Content-Type: application/octet-stream' -XPOST "$C_HOST/?c=${key}" --data-binary @- -sS
 	fi
 }
 
-function has_command() {
-    which "$1" >/dev/null 2>&1 
+has_command() {
+    command -v "$1" >/dev/null 2>&1
 }
 
-function main(){
+main(){
     if has_command pbcopy ; then
-        COPY="pbcopy"
-        PASTE="pbpaste"
+        copy="pbcopy"
+        paste="pbpaste"
     elif has_command xclip ; then
-        COPY="xclip -selection c"
-        PASTE="xclip -selection clipboard -o"
+        copy="xclip -selection c"
+        paste="xclip -selection clipboard -o"
     elif has_command xsel ; then
-        COPY="xsel --clipboard --input"
-        PASTE="xsel --clipboard --output"
+        copy="xsel --clipboard --input"
+        paste="xsel --clipboard --output"
     fi
 
-    COMMAND=$(basename $0)
-    COMMANDS=(cc cr cf c)
-    if echo ${COMMANDS[@]} | grep -o ${COMMAND} >/dev/null ; then
-        COMMAND="_${COMMAND}"
-        $COMMAND $@ <&0
+    command=$(basename "$0")
+    commands=(cc cr cf c)
+    if echo "${commands[@]}" | grep -o "${command}" >/dev/null ; then
+        command="_${command}"
+        $command "$@" <&0
     fi
 }
 # ------------------------------------------------------------------------------
 
-main $@
+main "$@"
