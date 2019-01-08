@@ -45,7 +45,7 @@ $ c file > file
 
 ### Quick Install
 ```bash
-$ wget -O- https://raw.githubusercontent.com/rettier/c/master/c | sh
+$ wget -O- https://raw.githubusercontent.com/rettier/c/master/install.sh | bash
 ```
 
 ### OSX
