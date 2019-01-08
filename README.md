@@ -43,6 +43,11 @@ $ c file > file
 
 ## Installation
 
+### Quick Install
+```bash
+$ wget -O- https://raw.githubusercontent.com/rettier/c/master/c | sh
+```
+
 ### OSX
 ```bash
 $ brew install rettier/tap/c
