@@ -131,6 +131,11 @@ main(){
     elif has_command xsel ; then
         copy="xsel --clipboard --input"
         paste="xsel --clipboard --output"
+    else
+        echo "No clipboard command found (supports pbcopy, xclip, xsel)"
+        echo "If you want to add support for your faviourite clipboard command"
+        echo "please open a pull request at https://github.com/rettier/c"
+        exit 1;
     fi
 
     command=$(basename "$0")
