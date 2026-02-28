@@ -22,7 +22,9 @@ mkdir -p "$CHROOT/usr/local/bin"
 mkdir -p "$CHROOT/DEBIAN"
 cp control "$CHROOT/DEBIAN/"
 cp c "$CHROOT/usr/local/bin/c"
-ln -fs "./c" "$CHROOT/usr/local/bin/cf"
+for x in cf cm cr ct; do
+  ln -fs "./c" "$CHROOT/usr/local/bin/$x"
+done
 dpkg --build "$CHROOT"
 rm -rf "$CHROOT"
 
