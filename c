@@ -125,6 +125,9 @@ main(){
     if has_command pbcopy ; then
         copy="pbcopy"
         paste="pbpaste"
+    elif has_command wl-copy ; then
+        copy="wl-copy"
+        paste="wl-paste -n"
     elif has_command xclip ; then
         copy="xclip -selection c"
         paste="xclip -selection clipboard -o"
@@ -132,7 +135,7 @@ main(){
         copy="xsel --clipboard --input"
         paste="xsel --clipboard --output"
     else
-        echo "No clipboard command found (supports pbcopy, xclip, xsel)"
+        echo "No clipboard command found (supports pbcopy, wl-clipboard, xclip, xsel)"
         echo "If you want to add support for your faviourite clipboard command"
         echo "please open a pull request at https://github.com/rettier/c"
         exit 1;
