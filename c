@@ -75,15 +75,68 @@ _canonicalize_file_path() {
 
 # ------------------------------------------------------------------------------
 # c macro start
+has_command() {
+    command -v "$1" >/dev/null 2>&1
+}
+
+find_command() {
+    case "$1" in
+        clipboard)
+            if has_command pbcopy ; then
+                copy="pbcopy"
+                paste="pbpaste"
+            elif has_command wl-copy ; then
+                copy="wl-copy"
+                paste="wl-paste -n"
+            elif has_command xclip ; then
+                copy="xclip -selection clipboard"
+                paste="xclip -selection clipboard -o"
+            elif has_command xsel ; then
+                copy="xsel --clipboard --input"
+                paste="xsel --clipboard --output"
+            else
+                echo "No clipboard command found (supports pbcopy, wl-clipboard, xclip, xsel)"
+                echo "If you want to add support for your faviourite clipboard command"
+                echo "please open a pull request at https://github.com/rettier/c"
+                exit 1;
+            fi
+        ;;
+
+        primary)
+            # pbcopy is omitted as mac does not support a "primary" clipboard
+            if has_command wl-copy ; then
+                copy="wl-copy -p"
+                paste="wl-paste -p -n"
+            elif has_command xclip ; then
+                copy="xclip"
+                paste="xclip -o"
+            elif has_command xsel ; then
+                copy="xsel --input"
+                paste="xsel --output"
+            else
+                echo "No clipboard command found that supports \"primary\" clipboards (supports wl-clipboard, xclip, xsel)"
+                echo "If you want to add support for your faviourite clipboard command"
+                echo "please open a pull request at https://github.com/rettier/c"
+                exit 1;
+            fi
+        ;;
+    esac
+}
+
+__c() {
+    if tty > /dev/null; then
+        ${paste}
+    else
+        ${copy} <&0
+    fi
+}
+
 _c(){
     if [[ $# -gt 0 ]] ; then
         _cr "$@" <&0
-        return
-    fi
-    if tty > /dev/null; then
-        ${paste} ${clipboard}
     else
-        ${copy} ${clipboard} <&0
+        find_command clipboard
+        __c "$@" <&0
     fi
 }
 
@@ -94,19 +147,17 @@ _cf(){
 }
 
 _cm() {
-    if tty > /dev/null ; then
-        ${paste} ${primary}
-    else
-        ${copy} ${primary} <&0
-    fi
+    find_command primary
+    __c "$@" <&0
 }
 
 _ct(){
+    find_command clipboard
     if tty > /dev/null ; then
-        ${paste} ${clipboard}
+        ${paste}
     else
-        ${copy} ${clipboard} <&0
-        ${paste} ${clipboard}
+        ${copy} <&0
+        ${paste}
     fi
 }
 
@@ -125,38 +176,7 @@ _cr(){
     fi
 }
 
-has_command() {
-    command -v "$1" >/dev/null 2>&1
-}
-
 main(){
-    if has_command pbcopy ; then
-        copy="pbcopy"
-        paste="pbpaste"
-        primary=""
-        clipboard=""
-    elif has_command wl-copy ; then
-        copy="wl-copy"
-        paste="wl-paste -n"
-        primary="-p"
-        clipboard=""
-    elif has_command xclip ; then
-        copy="xclip"
-        paste="xclip -o"
-        primary=""
-        clipboard="-selection clipboard"
-    elif has_command xsel ; then
-        copy="xsel --input"
-        paste="xsel --output"
-        primary=""
-        clipboard="--clipboard"
-    else
-        echo "No clipboard command found (supports pbcopy, wl-clipboard, xclip, xsel)"
-        echo "If you want to add support for your faviourite clipboard command"
-        echo "please open a pull request at https://github.com/rettier/c"
-        exit 1;
-    fi
-
     command=$(basename "$0")
     commands=(c cf cm cr ct)
     if echo "${commands[@]}" | grep -o "${command}" >/dev/null ; then
