@@ -3,8 +3,9 @@ services:
     c:
         restart: always
         image: rettier/c-server
+        build: .
         ports:
-            - 8099:8099
+            - 8099:80
         environment:
             HOST: 0.0.0.0
             PORT: 8099

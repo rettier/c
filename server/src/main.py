@@ -69,7 +69,7 @@ def get():
     if isinstance(result, str):
         result = gzip.compress(result.encode("utf-8"))
 
-    return Response(result, content_type="application/octet-stream")
+    return Response(result, content_type="application/octet-stream", headers={"Content-Encoding": "gzip"})
 
 
 if __name__ == "__main__":
