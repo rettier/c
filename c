@@ -81,18 +81,9 @@ _c(){
       return
   fi
   if tty > /dev/null; then
-    ${paste}
+    ${paste} ${clipboard}
   else
-    ${copy} <&0
-  fi
-}
-
-_cc(){
-  if tty > /dev/null ; then
-    ${paste}
-  else
-    ${copy} <&0
-    ${paste}
+    ${copy} ${clipboard} <&0
   fi
 }
 
@@ -100,6 +91,23 @@ _cf(){
     if realpath "$1" ; then
       realpath "$1" | _c "${@:2}" > /dev/null
     fi
+}
+
+_cm() {
+  if tty > /dev/null ; then
+    ${paste} ${primary}
+  else
+    ${copy} ${primary} <&0
+  fi
+}
+
+_ct(){
+  if tty > /dev/null ; then
+    ${paste} ${clipboard}
+  else
+    ${copy} ${clipboard} <&0
+    ${paste} ${clipboard}
+  fi
 }
 
 _cr(){
@@ -125,15 +133,23 @@ main(){
     if has_command pbcopy ; then
         copy="pbcopy"
         paste="pbpaste"
+        primary=""
+        clipboard=""
     elif has_command wl-copy ; then
         copy="wl-copy"
         paste="wl-paste -n"
+        primary="-p"
+        clipboard=""
     elif has_command xclip ; then
-        copy="xclip -selection c"
-        paste="xclip -selection clipboard -o"
+        copy="xclip"
+        paste="xclip -o"
+        primary=""
+        clipboard="-selection clipboard"
     elif has_command xsel ; then
-        copy="xsel --clipboard --input"
-        paste="xsel --clipboard --output"
+        copy="xsel --input"
+        paste="xsel --output"
+        primary=""
+        clipboard="--clipboard"
     else
         echo "No clipboard command found (supports pbcopy, wl-clipboard, xclip, xsel)"
         echo "If you want to add support for your faviourite clipboard command"
@@ -142,7 +158,7 @@ main(){
     fi
 
     command=$(basename "$0")
-    commands=(cc cr cf c)
+    commands=(c cf cm cr ct)
     if echo "${commands[@]}" | grep -o "${command}" >/dev/null ; then
         command="_${command}"
         $command "$@" <&0
