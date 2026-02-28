@@ -20,8 +20,8 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          chmod +x ./travis.sh
-          ./travis.sh
+          chmod +x ./ci.sh
+          ./ci.sh
 
       - name: Upload artifacts to GitHub Release
         uses: softprops/action-gh-release@v2

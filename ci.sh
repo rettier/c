@@ -5,7 +5,7 @@ set -e +x
 BASEDIR=$(dirname $0)
 pushd $BASEDIR
 
-VERSION=${TRAVIS_TAG:1}
+VERSION=${GITHUB_REF_NAME:1}
 PKG_NAME="c"
 
 # build tar gz
