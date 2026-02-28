@@ -76,38 +76,38 @@ _canonicalize_file_path() {
 # ------------------------------------------------------------------------------
 # c macro start
 _c(){
-  if [[ $# -gt 0 ]] ; then
-      _cr "$@" <&0
-      return
-  fi
-  if tty > /dev/null; then
-    ${paste} ${clipboard}
-  else
-    ${copy} ${clipboard} <&0
-  fi
+    if [[ $# -gt 0 ]] ; then
+        _cr "$@" <&0
+        return
+    fi
+    if tty > /dev/null; then
+        ${paste} ${clipboard}
+    else
+        ${copy} ${clipboard} <&0
+    fi
 }
 
 _cf(){
     if realpath "$1" ; then
-      realpath "$1" | _c "${@:2}" > /dev/null
+        realpath "$1" | _c "${@:2}" > /dev/null
     fi
 }
 
 _cm() {
-  if tty > /dev/null ; then
-    ${paste} ${primary}
-  else
-    ${copy} ${primary} <&0
-  fi
+    if tty > /dev/null ; then
+        ${paste} ${primary}
+    else
+        ${copy} ${primary} <&0
+    fi
 }
 
 _ct(){
-  if tty > /dev/null ; then
-    ${paste} ${clipboard}
-  else
-    ${copy} ${clipboard} <&0
-    ${paste} ${clipboard}
-  fi
+    if tty > /dev/null ; then
+        ${paste} ${clipboard}
+    else
+        ${copy} ${clipboard} <&0
+        ${paste} ${clipboard}
+    fi
 }
 
 _cr(){
@@ -116,13 +116,13 @@ _cr(){
         exit 1
     fi
 
-  key="${*}"
-  key=${key// /%20}
-	if tty > /dev/null ; then
-	    curl -G "$C_HOST/?c=${key}" -XGET -sS | gunzip
-	else
-	    gzip <&0 | curl -H 'Content-Type: application/octet-stream' -XPOST "$C_HOST/?c=${key}" --data-binary @- -sS
-	fi
+    key="${*}"
+    key=${key// /%20}
+    if tty > /dev/null ; then
+        curl -G "$C_HOST/?c=${key}" -XGET -sS | gunzip
+    else
+        gzip <&0 | curl -H 'Content-Type: application/octet-stream' -XPOST "$C_HOST/?c=${key}" --data-binary @- -sS
+    fi
 }
 
 has_command() {
