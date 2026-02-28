@@ -2,6 +2,8 @@
 
 The C Macro makes your local clipboard easily accessible in your Terminal. While xclip/pbcopy can do the same (and are used in the backend), the c macro is consistent across platforms with some neat extras.
 
+The beauty of the project lies within its simplicity. **Special Thanks** go out to **[@ItsShadowCone](https://www.github.com/ItsShadowCone)** for her recent contributions on the project 🥳.
+
 The C Macro is ideal for collaboration. We observed too often that many things get sent in messengers, spamming everyones notifcations and requiring an internet connection. Example usages include but are not limited to:
 
 ```bash
@@ -162,4 +164,9 @@ $ c test | c
 to paste from your local clipboard to the remote 
 ```bash
 $ c | c test
+```
+
+if you still want to see your output while also copying it to clipboard (similar to `tee`) you can use
+```
+$ date | ct
 ```
